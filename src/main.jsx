@@ -15,6 +15,7 @@ if ('serviceWorker' in navigator) {
     const swUrl = `${import.meta.env.BASE_URL}sw.js`;
     navigator.serviceWorker.register(swUrl).then(
       (registration) => {
+        registration.update();
         console.log('MAT2 Calc PWA registered successfully with scope:', registration.scope);
       },
       (err) => {

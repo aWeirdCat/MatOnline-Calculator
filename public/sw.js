@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mat2-calc-v1';
+const CACHE_NAME = 'mat2-calc-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -14,7 +14,9 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
+      return cache.addAll(ASSETS_TO_CACHE).catch((err) => {
+        console.warn('PWA cache.addAll warning:', err);
+      });
     })
   );
   self.skipWaiting();
@@ -36,17 +38,38 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: Serve from cache first, fallback to network
+// Fetch: Network-first for navigation (HTML), cache-first for static assets
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
+  // For HTML navigation requests, always fetch freshest from network first
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match('./index.html').then((res) => res || caches.match('./'));
+        })
+    );
+    return;
+  }
+
+  // For static assets: cache first, then network fallback
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
       return fetch(event.request).then((networkResponse) => {
-        // Cache dynamic assets (chunks, styles)
         if (
-          event.request.method === 'GET' &&
           networkResponse.status === 200 &&
           event.request.url.startsWith(self.location.origin)
         ) {
@@ -56,9 +79,6 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return networkResponse;
-      }).catch(() => {
-        // Offline fallback
-        return caches.match('/index.html');
       });
     })
   );
