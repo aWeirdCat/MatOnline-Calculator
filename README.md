@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./public/logo.png" alt="MatOnline Calculator Logo" width="128" height="128" />
+<img src="./public/logo1.png" alt="MatOnline Calculator Logo" width="128" height="128" />
 
 # MatOnline-Calculator
 ### Catologist's MAT2 Currency, Voucher & Deal Optimization Engine

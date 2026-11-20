@@ -1,4 +1,5 @@
 import React from 'react';
+import logoImg from '../assets/logo1.png';
 import './Header.css';
 
 export default function Header({ lang, setLang, t, onOpenWizard }) {
@@ -6,7 +7,7 @@ export default function Header({ lang, setLang, t, onOpenWizard }) {
     <header className="header-card">
       <div className="header-top">
         <div className="title-row">
-          <img src="/logo.png" alt="MAT2 Logo" className="header-logo-img" />
+          <img src={logoImg} alt="MAT2 Logo" className="header-logo-img" />
           <div className="title-text-group">
             <h1 className="header-title">{t.appTitle}</h1>
             <p className="header-subtitle">{t.appSubtitle}</p>
