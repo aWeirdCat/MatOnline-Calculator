@@ -1,0 +1,148 @@
+/* Reseller Deal Analyzer — Midnight Black × Electric Blue × Sunset Orange */
+.reseller-hud-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.125rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.2s ease;
+}
+
+.reseller-hud-card:hover {
+  border-color: var(--blue-border);
+}
+
+.hud-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.55rem;
+}
+
+.hud-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hud-badge {
+  background-color: var(--blue-surface);
+  color: var(--blue-secondary);
+  border: 1px solid var(--blue-border);
+  font-weight: 600;
+  font-size: 0.55rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.03em;
+}
+
+.hud-title {
+  color: var(--text-main);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.hud-target-rate {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.text-neon {
+  color: var(--blue-secondary);
+  font-weight: 600;
+}
+
+/* 3-Way Input Grid */
+.hud-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.hud-input-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.hud-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.03em;
+}
+
+.hud-input {
+  width: 100%;
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.35rem 0.5rem;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.hud-input:focus {
+  border-color: var(--blue-secondary);
+  background-color: #1f1f1f;
+  box-shadow: 0 0 0 1px var(--blue-secondary);
+}
+
+.hud-input::placeholder {
+  color: var(--text-dim);
+}
+
+/* Results Grid */
+.hud-results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.5rem;
+  align-items: end;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.result-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-val {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-top: 0.05rem;
+}
+
+/* RETAIL STORE VALUE in Blue */
+.val-neon {
+  color: var(--blue-secondary);
+}
+
+/* TARGET MAX (DEAL) in Sunset Orange */
+.val-green {
+  color: var(--orange-accent);
+}
+
+.result-sub-note {
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  margin-top: 0.05rem;
+}
+
+.brand-corner {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  padding-bottom: 0.05rem;
+}

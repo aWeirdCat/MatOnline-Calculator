@@ -1,0 +1,158 @@
+.badge-unit-price {
+  font-size: 0.68rem;
+  background-color: var(--blue-surface);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--blue-border);
+  color: var(--blue-secondary);
+}
+
+.target-type-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+  background-color: var(--bg-inset);
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 0.625rem;
+}
+
+.btn-type-tab {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-type-tab:hover {
+  color: #FFFFFF;
+}
+
+.btn-type-tab.active {
+  background-color: var(--blue-primary);
+  color: #FFFFFF;
+}
+
+.input-group {
+  margin-bottom: 0.6rem;
+}
+
+.input-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.input-label {
+  font-size: 0.72rem;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.direct-rm-preview {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.numeric-input {
+  width: 100%;
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.65rem;
+  font-family: var(--font-mono);
+  color: var(--text-main);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.numeric-input:focus {
+  border-color: var(--blue-secondary);
+  background-color: #1f1f1f;
+  box-shadow: 0 0 0 1px var(--blue-secondary);
+}
+
+.input-suffix {
+  position: absolute;
+  right: 0.65rem;
+  top: 0.45rem;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+/* Luck Coins Required Calculation Box for Spin Mode */
+.coins-needed-indicator {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.65rem;
+  margin-top: 0.45rem;
+  font-size: 0.68rem;
+}
+
+.coins-label {
+  color: var(--text-muted);
+}
+
+.coins-val {
+  color: var(--orange-accent);
+  font-weight: 700;
+}
+
+.coins-sub {
+  color: var(--text-dim);
+  font-size: 0.62rem;
+}
+
+.presets-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.presets-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.presets-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.btn-preset {
+  padding: 0.2rem 0.55rem;
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  color: #D4D4D4;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-preset:hover {
+  border-color: var(--blue-secondary);
+  color: #FFFFFF;
+  background-color: var(--blue-surface);
+}

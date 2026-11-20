@@ -1,0 +1,30 @@
+{
+  "id": "/?source=pwa",
+  "short_name": "MAT2 Calc",
+  "name": "Catologist's MAT2 Calculator",
+  "description": "Game Gold, Voucher & Reseller Deal Calculator for MAT2",
+  "icons": [
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180 192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "background_color": "#171717",
+  "theme_color": "#171717",
+  "display": "standalone",
+  "orientation": "portrait"
+}

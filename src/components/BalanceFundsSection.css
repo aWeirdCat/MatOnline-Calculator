@@ -1,0 +1,237 @@
+.balance-box {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.625rem;
+}
+
+.balance-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.balance-label {
+  font-size: 0.72rem;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.balance-rm {
+  font-size: 0.72rem;
+  color: var(--blue-secondary);
+}
+
+.balance-inputs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
+.refill-dropdown {
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.5rem;
+  font-size: 0.68rem;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.refill-dropdown:focus {
+  border-color: var(--blue-secondary);
+}
+
+.quick-buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.65rem;
+}
+
+.quick-title {
+  color: var(--text-dim);
+  margin-right: 0.2rem;
+}
+
+.btn-gold-quick {
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  color: #D4D4D4;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.65rem;
+}
+
+.btn-gold-quick:hover {
+  border-color: var(--blue-secondary);
+  color: #FFFFFF;
+}
+
+.btn-gold-quick.active {
+  border-color: var(--blue-secondary);
+  color: #FFFFFF;
+  background-color: var(--blue-primary);
+}
+
+.funds-selection-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 0.625rem;
+}
+
+.fund-card-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-panel);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fund-card-label:hover {
+  border-color: #383838;
+}
+
+.fund-checkbox {
+  margin-top: 0.15rem;
+  accent-color: var(--blue-primary);
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.fund-card-content {
+  flex: 1;
+  font-size: 0.72rem;
+}
+
+.fund-header-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fund-title {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.fund-cost {
+  color: var(--blue-secondary);
+  font-weight: 600;
+}
+
+.fund-desc {
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.fund-desc strong {
+  color: #FFFFFF;
+}
+
+.event-reload-box {
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-panel);
+  margin-bottom: 0.625rem;
+}
+
+.event-header-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.event-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.event-badge {
+  font-size: 0.65rem;
+  color: var(--blue-secondary);
+}
+
+.event-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.event-body.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.event-input-wrapper {
+  position: relative;
+}
+
+/* Voucher Denomination Explanation Box */
+.voucher-note-card {
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.65rem;
+  line-height: 1.4;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.voucher-note-title {
+  color: var(--blue-secondary);
+  font-weight: 600;
+}
+
+.voucher-note-body {
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+}
+
+.shortfall-alert {
+  margin-top: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--status-red);
+  font-size: 0.72rem;
+}
+
+.shortfall-title {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.alert-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.shortfall-msg {
+  margin-top: 0.2rem;
+  color: #D4D4D4;
+  line-height: 1.35;
+}
