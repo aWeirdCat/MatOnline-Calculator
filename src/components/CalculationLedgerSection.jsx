@@ -1,6 +1,8 @@
 import React from 'react';
 import { formatNumber, formatRM } from '../utils/calculator';
 import { RESELLER_CONFIG } from '../constants/gameData';
+import gemImg from '../assets/gem.png';
+import luckcoinImg from '../assets/luckcoin.png';
 import './CalculationLedgerSection.css';
 
 export default function CalculationLedgerSection({
@@ -45,6 +47,11 @@ export default function CalculationLedgerSection({
           <span className="ledger-label">{t.row1Label}</span>
           <div className="ledger-value">
             <span className="desc-text font-tabular">
+              <img
+                src={unitLabel.toLowerCase().includes('gem') ? gemImg : luckcoinImg}
+                alt=""
+                className="ledger-inline-icon"
+              />
               {formatNumber(targetQty)} {unitLabel}s @ {unitPrice}G
             </span>
             <span className="gold-highlight font-tabular">{formatNumber(fullGoldCost)} Gold</span>

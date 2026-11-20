@@ -5,6 +5,8 @@ const ASSETS_TO_CACHE = [
   './manifest.json',
   './logo1.png',
   './logo.png',
+  './gem.png',
+  './luckcoin.png',
   './favicon-32.png',
   './favicon-64.png',
   './favicon.png',

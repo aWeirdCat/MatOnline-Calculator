@@ -40,6 +40,16 @@
 .desc-text {
   color: #D4D4D4;
   margin-right: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ledger-inline-icon {
+  height: 14px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 0.3rem;
+  vertical-align: middle;
 }
 
 .gold-highlight {

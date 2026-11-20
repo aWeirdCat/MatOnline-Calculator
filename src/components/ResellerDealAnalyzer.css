@@ -78,6 +78,15 @@
   color: var(--text-muted);
   margin-bottom: 0.2rem;
   letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.hud-label-icon {
+  height: 13px;
+  width: auto;
+  object-fit: contain;
 }
 
 .hud-input {

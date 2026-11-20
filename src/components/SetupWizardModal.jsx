@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { formatNumber, formatRM } from '../utils/calculator';
 import { RESELLER_CONFIG } from '../constants/gameData';
+import gemImg from '../assets/gem.png';
+import luckcoinImg from '../assets/luckcoin.png';
 import './SetupWizardModal.css';
 
 export default function SetupWizardModal({
@@ -150,8 +152,13 @@ ${t.summarySave} ${formatRM(Math.max(0, netSavingsRM))}`;
                 onClick={() => handleTypeChange('gem')}
                 className={`wizard-select-btn ${targetType === 'gem' ? 'selected' : ''}`}
               >
-                <div className="select-btn-title">Gem</div>
-                <div className="select-btn-sub mono">550 Gold / Unit</div>
+                <div className="wizard-btn-content">
+                  <img src={gemImg} alt="Gem" className="wizard-card-icon" />
+                  <div>
+                    <div className="select-btn-title">Gem</div>
+                    <div className="select-btn-sub mono">550 Gold / Unit</div>
+                  </div>
+                </div>
               </button>
 
               <button
@@ -159,8 +166,13 @@ ${t.summarySave} ${formatRM(Math.max(0, netSavingsRM))}`;
                 onClick={() => handleTypeChange('spin')}
                 className={`wizard-select-btn ${targetType === 'spin' ? 'selected' : ''}`}
               >
-                <div className="select-btn-title">Spin</div>
-                <div className="select-btn-sub mono">9 Coins (270 Gold) / Spin</div>
+                <div className="wizard-btn-content">
+                  <img src={luckcoinImg} alt="Luck Coin" className="wizard-card-icon" />
+                  <div>
+                    <div className="select-btn-title">Spin</div>
+                    <div className="select-btn-sub mono">9 Coins (270 Gold) / Spin</div>
+                  </div>
+                </div>
               </button>
             </div>
 

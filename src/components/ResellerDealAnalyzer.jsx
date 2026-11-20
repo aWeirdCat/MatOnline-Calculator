@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RESELLER_CONFIG } from '../constants/gameData';
 import { formatRM } from '../utils/calculator';
+import luckcoinImg from '../assets/luckcoin.png';
 import './ResellerDealAnalyzer.css';
 
 export default function ResellerDealAnalyzer({ t }) {
@@ -106,7 +107,10 @@ export default function ResellerDealAnalyzer({ t }) {
 
         {/* COINS */}
         <div className="hud-input-col">
-          <label className="hud-label mono">{t.coinsLabel}</label>
+          <label className="hud-label mono">
+            <img src={luckcoinImg} alt="Luck Coin" className="hud-label-icon" />
+            {t.coinsLabel}
+          </label>
           <input
             type="text"
             value={coins}

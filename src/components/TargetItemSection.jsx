@@ -1,6 +1,8 @@
 import React from 'react';
 import { ITEM_PRESETS } from '../constants/gameData';
 import { formatNumber, formatRM } from '../utils/calculator';
+import gemImg from '../assets/gem.png';
+import luckcoinImg from '../assets/luckcoin.png';
 import './TargetItemSection.css';
 
 export default function TargetItemSection({
@@ -34,6 +36,7 @@ export default function TargetItemSection({
           {isGem ? t.targetItemTitle : t.targetSpinTitle}
         </h2>
         <span className="badge-unit-price mono font-tabular">
+          <img src={isGem ? gemImg : luckcoinImg} alt={isGem ? "Gem" : "Luck Coin"} className="badge-item-icon" />
           {isGem ? '550 Gold / Gem' : '9 Coins (270G) / Spin'}
         </span>
       </div>
@@ -48,6 +51,7 @@ export default function TargetItemSection({
           }}
           className={`btn-type-tab mono ${isGem ? 'active' : ''}`}
         >
+          <img src={gemImg} alt="Gem" className="tab-item-icon" />
           Gem (550G)
         </button>
         <button
@@ -58,6 +62,7 @@ export default function TargetItemSection({
           }}
           className={`btn-type-tab mono ${!isGem ? 'active' : ''}`}
         >
+          <img src={luckcoinImg} alt="Luck Coin" className="tab-item-icon" />
           Spin (9 Coins / 270G)
         </button>
       </div>
@@ -83,16 +88,22 @@ export default function TargetItemSection({
             placeholder="0"
             className="numeric-input font-tabular"
           />
-          <span className="input-suffix mono">{isGem ? t.gemsSuffix : t.spinsSuffix}</span>
+          <span className="input-suffix mono">
+            <img src={isGem ? gemImg : luckcoinImg} alt="" className="suffix-item-icon" />
+            {isGem ? t.gemsSuffix : t.spinsSuffix}
+          </span>
         </div>
 
         {/* Total Luck Coins Required Display */}
         {!isGem && (
           <div className="coins-needed-indicator mono">
             <span className="coins-label">{t.totalCoinsRequired}</span>
-            <strong className="coins-val font-tabular text-orange">
-              {formatNumber(totalCoinsNeeded)} Luck Coins
-            </strong>
+            <div className="coins-val-wrap">
+              <img src={luckcoinImg} alt="Luck Coin" className="indicator-coin-icon" />
+              <strong className="coins-val font-tabular text-orange">
+                {formatNumber(totalCoinsNeeded)} Luck Coins
+              </strong>
+            </div>
             <span className="coins-sub font-tabular">
               ({formatNumber(numericQty)} × 9 LC @ 30G)
             </span>
