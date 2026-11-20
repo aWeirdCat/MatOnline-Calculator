@@ -1,13 +1,13 @@
 const CACHE_NAME = 'mat2-calc-v1';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/logo.png',
-  '/favicon-32.png',
-  '/favicon-64.png',
-  '/favicon.png',
-  '/apple-touch-icon.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './logo.png',
+  './favicon-32.png',
+  './favicon-64.png',
+  './favicon.png',
+  './apple-touch-icon.png'
 ];
 
 // Install: Cache core assets for offline mobile use

@@ -12,13 +12,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 // Register Service Worker for iOS & Android Mobile PWA Application
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then(
+    const swUrl = `${import.meta.env.BASE_URL}sw.js`;
+    navigator.serviceWorker.register(swUrl).then(
       (registration) => {
         console.log('MAT2 Calc PWA registered successfully with scope:', registration.scope);
       },
       (err) => {
-        console.log('MAT2 Calc PWA registration failed:', err);
+        console.warn('MAT2 Calc PWA registration failed (safe to ignore if not on HTTPS or offline):', err);
       }
-    );
+    ).catch(() => {});
   });
 }
