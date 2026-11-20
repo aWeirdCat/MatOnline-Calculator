@@ -11,10 +11,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/aWeirdCat/MatOnline-Calculator/pulls)
 
+### 🌐 [**Launch Live Calculator: aweirdcat.github.io/MatOnline-Calculator**](https://aweirdcat.github.io/MatOnline-Calculator/)
+
 **An all-in-one web calculator and decision-support tool for Mission Against Terror 2 (MAT2) players.**  
 Calculate optimal gold refill packs, deduct active funds and event vouchers with realistic non-split rules, and evaluate reseller deals in real time.
 
-[Features](#-key-features) • [Quick Start](#-quick-start) • [Game Economy Mechanics](#-game-economy-mechanics) • [Architecture](#-project-structure) • [Contributing](#-contributing)
+[🌐 Live App](https://aweirdcat.github.io/MatOnline-Calculator/) • [Features](#-key-features) • [Quick Start](#-quick-start) • [Game Economy Mechanics](#-game-economy-mechanics) • [Architecture](#-project-structure) • [Contributing](#-contributing)
 
 ---
 
