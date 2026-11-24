@@ -9,6 +9,7 @@ export default function SetupWizardModal({
   isOpen,
   onClose,
   initialTargetQty,
+  initialGemPrice = 550,
   initialUseCheap,
   initialUseExp,
   initialReloadVoucher,
@@ -24,6 +25,7 @@ export default function SetupWizardModal({
   // Wizard state: targetType is 'gem' or 'spin'
   const [targetType, setTargetType] = useState('gem'); // 'gem' | 'spin'
   const [qty, setQty] = useState(initialTargetQty !== undefined ? initialTargetQty : 339);
+  const [gemPrice, setGemPrice] = useState(initialGemPrice || 550);
 
   const [useCheap, setUseCheap] = useState(initialUseCheap ?? true);
   const [useExp, setUseExp] = useState(initialUseExp ?? true);
@@ -62,11 +64,22 @@ export default function SetupWizardModal({
     }
   };
 
+  const handleGemPriceChange = (e) => {
+    const val = e.target.value;
+    if (val === '') {
+      setGemPrice('');
+    } else {
+      const parsed = parseInt(val, 10);
+      setGemPrice(isNaN(parsed) ? '' : Math.max(0, parsed));
+    }
+  };
+
   const numericQty = qty === '' ? 0 : parseInt(qty, 10) || 0;
+  const safeGemPrice = gemPrice === '' ? 550 : parseInt(gemPrice, 10) || 550;
   const numericReload = reloadAmount === '' ? 0 : parseInt(reloadAmount, 10) || 0;
 
   // 1 Spin = 9 Luck Coins @ 30G/coin = 270 Gold
-  const unitPrice = targetType === 'gem' ? 550 : 270;
+  const unitPrice = targetType === 'gem' ? safeGemPrice : 270;
   const fullGold = numericQty * unitPrice;
   const fullRM = fullGold * 0.0216;
   const totalCoinsNeeded = targetType === 'spin' ? numericQty * 9 : null;
@@ -76,12 +89,15 @@ export default function SetupWizardModal({
   const coveredItems = Math.min(numericQty, Math.floor(totalVouchers / unitPrice));
   const remainingItems = numericQty - coveredItems;
   const remainingGold = remainingItems * unitPrice;
+  const usedVoucher = coveredItems * unitPrice;
+  const dustVoucher = totalVouchers - usedVoucher;
 
   const balanceAfterFund = initialModalGold - totalFundCost;
   const usableGold = balanceAfterFund >= 0 ? balanceAfterFund : 0;
   const fundShortfall = balanceAfterFund < 0 ? Math.abs(balanceAfterFund) : 0;
+  const netItemDeficit = Math.max(0, remainingGold - usableGold);
 
-  const extraGoldNeeded = fundShortfall + Math.max(0, remainingGold - usableGold);
+  const extraGoldNeeded = fundShortfall + netItemDeficit;
   const extraRMNeeded = extraGoldNeeded * 0.0216;
   const resellerExtraPrice = extraGoldNeeded * RESELLER_CONFIG.targetRate;
   const actualTotalRM = (initialModalGold + extraGoldNeeded) * 0.0216;
@@ -91,6 +107,7 @@ export default function SetupWizardModal({
     onApplyConfig({
       targetType,
       qty: numericQty,
+      gemPrice: safeGemPrice,
       useCheap,
       useExp,
       useReload,
@@ -100,12 +117,31 @@ export default function SetupWizardModal({
   };
 
   const handleCopyAndEnter = () => {
-    const targetLabel = targetType === 'gem' ? 'Gems' : `Spins (${formatNumber(totalCoinsNeeded)} Luck Coins)`;
+    const totalCoins = targetType === 'spin' ? numericQty * 9 : null;
+    const targetLabel =
+      targetType === 'gem'
+        ? `${numericQty} Gems @ ${unitPrice}G`
+        : `${numericQty} Spins (${formatNumber(totalCoins)} Luck Coins)`;
+
+    const fundDetailText =
+      balanceAfterFund >= 0
+        ? `${formatNumber(usableGold)} ${t.goldUsable}`
+        : `${formatNumber(fundShortfall)} Gold (${t.shortfallLabel})`;
+
     const summaryText = `${t.summaryTitle}
 ━━━━━━━━━━━━━━━━━━━━
-${t.summaryTarget} ${numericQty} ${targetLabel} (${formatNumber(fullGold)} Gold)
+${t.summaryTarget} ${targetLabel} (${formatNumber(fullGold)} Gold)
 ${t.summaryModal} ${formatNumber(initialModalGold)} Gold (${formatRM(initialModalGold * 0.0216)})
-${t.summaryVoucherCover} ${formatNumber(coveredItems)} (${t.summaryRemain} ${formatNumber(remainingItems)})
+━━━━━━━━━━━━━━━━━━━━
+${t.summaryProcessTitle}
+${t.summaryStep1} ${formatNumber(fullGold)} Gold (${formatRM(fullRM)})
+${t.summaryStep2} -${formatNumber(totalFundCost)} Gold
+${balanceAfterFund >= 0 ? t.summaryStep2Balance : t.summaryStep2Shortfall} ${fundDetailText}
+${t.summaryStep3} ${formatNumber(totalVouchers)} Vouchers
+${t.summaryStep3Cover} ${formatNumber(coveredItems)} ${targetType === 'gem' ? 'Gems' : 'Spins'} (${t.summaryDust} ${formatNumber(dustVoucher)} Vouchers)
+${t.summaryStep4} ${formatNumber(remainingItems)} ${targetType === 'gem' ? 'Gems' : 'Spins'} = ${formatNumber(remainingGold)} Gold
+${t.summaryStep5} -${formatNumber(usableGold)} Gold
+${t.summaryStep5Deficit} ${formatNumber(netItemDeficit)} Gold
 ━━━━━━━━━━━━━━━━━━━━
 ${t.summaryExtraNeeded}
 ${t.summaryExtraGold} ${formatNumber(extraGoldNeeded)} Gold
@@ -156,7 +192,7 @@ ${t.summarySave} ${formatRM(Math.max(0, netSavingsRM))}`;
                   <img src={gemImg} alt="Gem" className="wizard-card-icon" />
                   <div>
                     <div className="select-btn-title">Gem</div>
-                    <div className="select-btn-sub mono">550 Gold / Unit</div>
+                    <div className="select-btn-sub mono">{safeGemPrice} Gold / Unit</div>
                   </div>
                 </div>
               </button>
@@ -215,6 +251,40 @@ ${t.summarySave} ${formatRM(Math.max(0, netSavingsRM))}`;
                 )}
               </div>
             </div>
+
+            {/* Custom Gem Price Input for Gem mode in Wizard */}
+            {targetType === 'gem' && (
+              <div className="wizard-input-group mt-2">
+                <div className="flex justify-between items-center">
+                  <label className="wizard-input-label">
+                    {lang === 'bm' ? 'Harga Seunit Gem (Gold):' : 'Gem Unit Price (Gold):'}
+                  </label>
+                  <span className="mono font-tabular text-muted" style={{ fontSize: '0.7rem' }}>
+                    Standard: 550G
+                  </span>
+                </div>
+                <input
+                  type="number"
+                  min="1"
+                  value={gemPrice}
+                  onChange={handleGemPriceChange}
+                  placeholder="550"
+                  className="wizard-number-input font-tabular"
+                />
+                <div className="wizard-presets-row">
+                  {[550, 500, 600].map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => setGemPrice(p)}
+                      className={`btn-wizard-preset mono ${safeGemPrice === p ? 'active' : ''}`}
+                    >
+                      {p}G
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -335,12 +405,24 @@ ${t.summarySave} ${formatRM(Math.max(0, netSavingsRM))}`;
               <div className="summary-line">
                 <span>{lang === 'bm' ? 'Sasaran:' : 'Target:'}</span>
                 <strong>
-                  {numericQty} {targetType === 'gem' ? 'Gems' : `Spins (${formatNumber(totalCoinsNeeded)} LC)`} ({formatNumber(fullGold)} Gold)
+                  {numericQty} {targetType === 'gem' ? `Gems @ ${unitPrice}G` : `Spins (${formatNumber(totalCoinsNeeded)} LC)`} ({formatNumber(fullGold)} Gold)
                 </strong>
               </div>
               <div className="summary-line">
+                <span>{lang === 'bm' ? 'Dana Aktif Diguna:' : 'Active Funds Used:'}</span>
+                <span>-{formatNumber(totalFundCost)} Gold</span>
+              </div>
+              <div className="summary-line">
+                <span>{lang === 'bm' ? 'Baucar Tersedia:' : 'Total Vouchers:'}</span>
+                <span>{formatNumber(totalVouchers)} Vouchers</span>
+              </div>
+              <div className="summary-line">
                 <span>{lang === 'bm' ? 'Dilindungi Baucar:' : 'Voucher Covered:'}</span>
-                <span className="text-blue">{formatNumber(coveredItems)} {targetType === 'gem' ? 'Gems' : 'Spins'}</span>
+                <span className="text-blue">{formatNumber(coveredItems)} {targetType === 'gem' ? 'Gems' : 'Spins'} ({formatNumber(dustVoucher)} Dust)</span>
+              </div>
+              <div className="summary-line">
+                <span>{lang === 'bm' ? 'Baki Item Perlu Beli:' : 'Remaining Items:'}</span>
+                <span>{formatNumber(remainingItems)} {targetType === 'gem' ? 'Gems' : 'Spins'} = {formatNumber(remainingGold)} Gold</span>
               </div>
               <div className="summary-line highlight-line">
                 <span>{lang === 'bm' ? 'Top-Up Diperlukan:' : 'Extra Gold Needed:'}</span>

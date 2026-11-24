@@ -8,6 +8,8 @@ import './TargetItemSection.css';
 export default function TargetItemSection({
   targetQty,
   setTargetQty,
+  gemPrice = 550,
+  setGemPrice,
   unitPrice,
   fullRMCost,
   targetType,
@@ -28,6 +30,16 @@ export default function TargetItemSection({
     }
   };
 
+  const handleGemPriceChange = (e) => {
+    const val = e.target.value;
+    if (val === '') {
+      setGemPrice('');
+    } else {
+      const parsed = parseInt(val, 10);
+      setGemPrice(isNaN(parsed) ? '' : Math.max(0, parsed));
+    }
+  };
+
   return (
     <section className="card-section">
       <div className="section-header">
@@ -37,7 +49,7 @@ export default function TargetItemSection({
         </h2>
         <span className="badge-unit-price mono font-tabular">
           <img src={isGem ? gemImg : luckcoinImg} alt={isGem ? "Gem" : "Luck Coin"} className="badge-item-icon" />
-          {isGem ? '550 Gold / Gem' : '9 Coins (270G) / Spin'}
+          {isGem ? `${unitPrice} Gold / Gem` : '9 Coins (270G) / Spin'}
         </span>
       </div>
 
@@ -52,7 +64,7 @@ export default function TargetItemSection({
           className={`btn-type-tab mono ${isGem ? 'active' : ''}`}
         >
           <img src={gemImg} alt="Gem" className="tab-item-icon" />
-          Gem (550G)
+          Gem ({unitPrice}G)
         </button>
         <button
           type="button"
@@ -66,6 +78,42 @@ export default function TargetItemSection({
           Spin (9 Coins / 270G)
         </button>
       </div>
+
+      {/* Gem Unit Price Input (Only for Gem mode) */}
+      {isGem && (
+        <div className="input-group">
+          <div className="input-header-row">
+            <label htmlFor="gemPriceInput" className="input-label">
+              {t.gemPriceLabel}
+            </label>
+            <div className="gem-price-presets">
+              {[550, 500, 600].map((price) => (
+                <button
+                  key={price}
+                  type="button"
+                  onClick={() => setGemPrice(price)}
+                  className={`btn-tiny-preset mono ${gemPrice === price ? 'active' : ''}`}
+                >
+                  {price}G
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="input-wrapper">
+            <input
+              id="gemPriceInput"
+              type="number"
+              min="1"
+              step="1"
+              value={gemPrice}
+              onChange={handleGemPriceChange}
+              placeholder="550"
+              className="numeric-input font-tabular"
+            />
+            <span className="input-suffix mono">Gold</span>
+          </div>
+        </div>
+      )}
 
       {/* Target Quantity Input */}
       <div className="input-group">

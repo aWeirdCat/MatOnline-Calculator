@@ -20,6 +20,7 @@ export default function App() {
   // Core Calculator Configuration States
   const [targetType, setTargetType] = useState('gem'); // 'gem' | 'spin'
   const [targetQty, setTargetQty] = useState(339);
+  const [gemPrice, setGemPrice] = useState(550);
 
   const [modalGold, setModalGold] = useState(50000);
   const [useCheapFund, setUseCheapFund] = useState(true);
@@ -33,6 +34,7 @@ export default function App() {
   const handleApplyWizardConfig = (cfg) => {
     setTargetType(cfg.targetType);
     setTargetQty(cfg.qty);
+    if (cfg.gemPrice !== undefined) setGemPrice(cfg.gemPrice);
     setUseCheapFund(cfg.useCheap);
     setUseExpFund(cfg.useExp);
     setUseReloadEvent(cfg.useReload);
@@ -41,12 +43,14 @@ export default function App() {
 
   // Convert empty string to 0 for calculations so backspacing doesn't break
   const safeQty = targetQty === '' ? 0 : parseInt(targetQty, 10) || 0;
+  const safeGemPrice = gemPrice === '' ? 550 : parseInt(gemPrice, 10) || 550;
   const safeModalGold = modalGold === '' ? 0 : parseInt(modalGold, 10) || 0;
   const safeReloadVoucher = reloadVoucher === '' ? 0 : parseInt(reloadVoucher, 10) || 0;
 
   // Perform Calculations (1 Spin = 9 Luck Coins = 270 Gold)
   const calc = calculateAll({
     mode: targetType,
+    gemPrice: safeGemPrice,
     lcRate: 30,
     targetQty: safeQty,
     modalGold: safeModalGold,
@@ -73,14 +77,28 @@ export default function App() {
     const totalCoins = targetType === 'spin' ? safeQty * 9 : null;
     const targetLabel =
       targetType === 'gem'
-        ? `${safeQty} Gems`
+        ? `${safeQty} Gems @ ${calc.unitPrice}G`
         : `${safeQty} Spins (${formatNumber(totalCoins)} Luck Coins)`;
+
+    const fundDetailText =
+      calc.balanceAfterFund >= 0
+        ? `${formatNumber(calc.usableGold)} ${t.goldUsable}`
+        : `${formatNumber(calc.fundShortfall)} Gold (${t.shortfallLabel})`;
 
     const summary = `${t.summaryTitle}
 ━━━━━━━━━━━━━━━━━━━━
 ${t.summaryTarget} ${targetLabel} (${formatNumber(calc.fullGoldCost)} Gold)
 ${t.summaryModal} ${formatNumber(safeModalGold)} Gold (${formatRM(safeModalGold * 0.0216)})
-${t.summaryVoucherCover} ${formatNumber(calc.coveredItems)} (${t.summaryRemain} ${formatNumber(calc.remainingItems)})
+━━━━━━━━━━━━━━━━━━━━
+${t.summaryProcessTitle}
+${t.summaryStep1} ${formatNumber(calc.fullGoldCost)} Gold (${formatRM(calc.fullRMCost)})
+${t.summaryStep2} -${formatNumber(calc.totalFundCost)} Gold
+${calc.balanceAfterFund >= 0 ? t.summaryStep2Balance : t.summaryStep2Shortfall} ${fundDetailText}
+${t.summaryStep3} ${formatNumber(calc.totalVoucherYield)} Vouchers
+${t.summaryStep3Cover} ${formatNumber(calc.coveredItems)} ${calc.unitLabel}s (${t.summaryDust} ${formatNumber(calc.dustVoucher)} Vouchers)
+${t.summaryStep4} ${formatNumber(calc.remainingItems)} ${calc.unitLabel}s = ${formatNumber(calc.remainingItemsGold)} Gold
+${t.summaryStep5} -${formatNumber(calc.usableGold)} Gold
+${t.summaryStep5Deficit} ${formatNumber(calc.netItemDeficit)} Gold
 ━━━━━━━━━━━━━━━━━━━━
 ${t.summaryExtraNeeded}
 ${t.summaryExtraGold} ${formatNumber(calc.extraGoldNeeded)} Gold
@@ -99,6 +117,7 @@ ${t.summarySave} ${formatRM(Math.max(0, calc.netSavingsRM))}`;
         isOpen={showWizard}
         onClose={() => setShowWizard(false)}
         initialTargetQty={targetQty}
+        initialGemPrice={gemPrice}
         initialUseCheap={useCheapFund}
         initialUseExp={useExpFund}
         initialReloadVoucher={reloadVoucher}
@@ -128,6 +147,8 @@ ${t.summarySave} ${formatRM(Math.max(0, calc.netSavingsRM))}`;
           <TargetItemSection
             targetQty={targetQty}
             setTargetQty={setTargetQty}
+            gemPrice={gemPrice}
+            setGemPrice={setGemPrice}
             unitPrice={calc.unitPrice}
             fullRMCost={calc.fullRMCost}
             targetType={targetType}

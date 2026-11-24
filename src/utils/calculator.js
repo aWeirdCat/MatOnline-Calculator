@@ -95,6 +95,7 @@ export function solveOptimalPacks(goldNeeded) {
  */
 export function calculateAll({
   mode = 'gem',
+  gemPrice = 550,
   lcRate = 30,
   targetQty,
   modalGold,
@@ -103,7 +104,7 @@ export function calculateAll({
   useReloadEvent,
   reloadVoucher
 }) {
-  let unitPrice = 550;
+  let unitPrice = gemPrice || 550;
   let unitLabel = 'Gem';
   if (mode === 'spin') {
     unitPrice = 9 * lcRate;

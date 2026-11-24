@@ -60,6 +60,35 @@
   color: #FFFFFF;
 }
 
+.gem-price-presets {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.btn-tiny-preset {
+  background-color: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-tiny-preset:hover {
+  border-color: var(--blue-secondary);
+  color: #FFFFFF;
+}
+
+.btn-tiny-preset.active {
+  background-color: var(--blue-surface);
+  border-color: var(--blue-secondary);
+  color: var(--blue-secondary);
+  font-weight: 600;
+}
+
 .input-group {
   margin-bottom: 0.6rem;
 }
