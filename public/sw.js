@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mat2-calc-v2';
+const CACHE_NAME = 'mat2-calc-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
