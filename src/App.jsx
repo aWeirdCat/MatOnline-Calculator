@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import StoreSection from './components/StoreSection';
 import SetupWizardModal from './components/SetupWizardModal';
 import ResellerDealAnalyzer from './components/ResellerDealAnalyzer';
 import TargetItemSection from './components/TargetItemSection';
@@ -14,8 +15,25 @@ export default function App() {
   const [lang, setLang] = useState('en'); // 'en' | 'bm'
   const t = translations[lang] || translations.en;
 
-  // Pop-up Wizard Modal State (Opens automatically on first visit)
-  const [showWizard, setShowWizard] = useState(true);
+  // Active View Tab: 'store' (Default Main View) or 'calculator'
+  const [activeTab, setActiveTab] = useState('store');
+
+  // Light / Dark Theme State (Persisted in localStorage)
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('mat2_theme') || 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('mat2_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  // Pop-up Wizard Modal State (Opens automatically on first visit when visiting calculator)
+  const [showWizard, setShowWizard] = useState(false);
 
   // Core Calculator Configuration States
   const [targetType, setTargetType] = useState('gem'); // 'gem' | 'spin'
@@ -29,6 +47,11 @@ export default function App() {
   const [reloadVoucher, setReloadVoucher] = useState(22500);
 
   const [toastMessage, setToastMessage] = useState('');
+
+  const triggerToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 2500);
+  };
 
   // Handle configuration from the Wizard
   const handleApplyWizardConfig = (cfg) => {
@@ -65,11 +88,9 @@ export default function App() {
   // Direct clipboard copy triggered by Wizard or Bottom button
   const handleCopyTextDirect = (text) => {
     navigator.clipboard.writeText(text).then(() => {
-      setToastMessage(t.copiedToast);
-      setTimeout(() => setToastMessage(''), 2500);
+      triggerToast(t.copiedToast);
     }).catch(() => {
-      setToastMessage(t.failedToast);
-      setTimeout(() => setToastMessage(''), 2500);
+      triggerToast(t.failedToast);
     });
   };
 
@@ -112,6 +133,77 @@ ${t.summarySave} ${formatRM(Math.max(0, calc.netSavingsRM))}`;
 
   return (
     <div className="app-container">
+      {/* Top Main Navigation Bar: Store vs Calculator + Theme & Lang Controls */}
+      <nav className="main-nav-bar">
+        <div className="nav-tabs">
+          <button
+            type="button"
+            className={`nav-tab-btn ${activeTab === 'store' ? 'active' : ''}`}
+            onClick={() => setActiveTab('store')}
+          >
+            CiBmall Store
+            <span className="nav-tab-pill">Main</span>
+          </button>
+          <button
+            type="button"
+            className={`nav-tab-btn ${activeTab === 'calculator' ? 'active' : ''}`}
+            onClick={() => setActiveTab('calculator')}
+          >
+            MAT2 Calculator
+          </button>
+        </div>
+
+        <div className="nav-controls">
+          {/* Light / Dark Mode Toggle Button */}
+          <button
+            type="button"
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? (
+              /* Sun icon */
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            ) : (
+              /* Moon icon */
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            )}
+          </button>
+
+          {/* Language Switcher */}
+          <div className="lang-switcher">
+            <button
+              type="button"
+              onClick={() => setLang('en')}
+              className={`lang-btn ${lang === 'en' ? 'active' : ''}`}
+            >
+              EN
+            </button>
+            <span className="lang-divider">/</span>
+            <button
+              type="button"
+              onClick={() => setLang('bm')}
+              className={`lang-btn ${lang === 'bm' ? 'active' : ''}`}
+            >
+              BM
+            </button>
+          </div>
+        </div>
+      </nav>
+
       {/* Step-by-Step Setup Wizard Pop-Up */}
       <SetupWizardModal
         isOpen={showWizard}
@@ -134,73 +226,83 @@ ${t.summarySave} ${formatRM(Math.max(0, calc.netSavingsRM))}`;
         {toastMessage}
       </div>
 
-      {/* TOP ROW: Header with Language Switcher & Reseller Deal Analyzer */}
-      <div className="desktop-top-grid">
-        <Header lang={lang} setLang={setLang} t={t} onOpenWizard={() => setShowWizard(true)} />
-        <ResellerDealAnalyzer t={t} />
-      </div>
+      {/* VIEW 1: STORE VIEW (DEFAULT MAIN) */}
+      {activeTab === 'store' && (
+        <StoreSection t={t} onNotify={triggerToast} />
+      )}
 
-      {/* MAIN ROW: 2-Column Side-by-Side */}
-      <div className="desktop-main-grid">
-        {/* Left Column: Target Item + Balance & Funds */}
-        <div className="desktop-col">
-          <TargetItemSection
-            targetQty={targetQty}
-            setTargetQty={setTargetQty}
-            gemPrice={gemPrice}
-            setGemPrice={setGemPrice}
-            unitPrice={calc.unitPrice}
-            fullRMCost={calc.fullRMCost}
-            targetType={targetType}
-            setTargetType={setTargetType}
-            t={t}
-          />
+      {/* VIEW 2: MAT2 CALCULATOR VIEW */}
+      {activeTab === 'calculator' && (
+        <>
+          {/* TOP ROW: Header with Setup Wizard & Reseller Deal Analyzer */}
+          <div className="desktop-top-grid">
+            <Header lang={lang} setLang={setLang} t={t} onOpenWizard={() => setShowWizard(true)} />
+            <ResellerDealAnalyzer t={t} />
+          </div>
 
-          <BalanceFundsSection
-            modalGold={modalGold}
-            setModalGold={setModalGold}
-            useCheapFund={useCheapFund}
-            setUseCheapFund={setUseCheapFund}
-            useExpFund={useExpFund}
-            setUseExpFund={setUseExpFund}
-            useReloadEvent={useReloadEvent}
-            setUseReloadEvent={setUseReloadEvent}
-            reloadVoucher={reloadVoucher}
-            setReloadVoucher={setReloadVoucher}
-            fundShortfall={calc.fundShortfall}
-            totalFundCost={calc.totalFundCost}
-            t={t}
-          />
-        </div>
+          {/* MAIN ROW: 2-Column Side-by-Side */}
+          <div className="desktop-main-grid">
+            {/* Left Column: Target Item + Balance & Funds */}
+            <div className="desktop-col">
+              <TargetItemSection
+                targetQty={targetQty}
+                setTargetQty={setTargetQty}
+                gemPrice={gemPrice}
+                setGemPrice={setGemPrice}
+                unitPrice={calc.unitPrice}
+                fullRMCost={calc.fullRMCost}
+                targetType={targetType}
+                setTargetType={setTargetType}
+                t={t}
+              />
 
-        {/* Right Column: Calculation Ledger */}
-        <div className="desktop-col">
-          <CalculationLedgerSection
-            targetQty={safeQty}
-            unitLabel={calc.unitLabel}
-            unitPrice={calc.unitPrice}
-            fullGoldCost={calc.fullGoldCost}
-            fullRMCost={calc.fullRMCost}
-            modalGold={safeModalGold}
-            totalFundCost={calc.totalFundCost}
-            balanceAfterFund={calc.balanceAfterFund}
-            fundShortfall={calc.fundShortfall}
-            totalVoucherYield={calc.totalVoucherYield}
-            coveredItems={calc.coveredItems}
-            dustVoucher={calc.dustVoucher}
-            remainingItems={calc.remainingItems}
-            remainingItemsGold={calc.remainingItemsGold}
-            usableGold={calc.usableGold}
-            netItemDeficit={calc.netItemDeficit}
-            extraGoldNeeded={calc.extraGoldNeeded}
-            extraRMNeeded={calc.extraRMNeeded}
-            actualTotalRM={calc.actualTotalRM}
-            netSavingsRM={calc.netSavingsRM}
-            onCopySummary={handleCopySummary}
-            t={t}
-          />
-        </div>
-      </div>
+              <BalanceFundsSection
+                modalGold={modalGold}
+                setModalGold={setModalGold}
+                useCheapFund={useCheapFund}
+                setUseCheapFund={setUseCheapFund}
+                useExpFund={useExpFund}
+                setUseExpFund={setUseExpFund}
+                useReloadEvent={useReloadEvent}
+                setUseReloadEvent={setUseReloadEvent}
+                reloadVoucher={reloadVoucher}
+                setReloadVoucher={setReloadVoucher}
+                fundShortfall={calc.fundShortfall}
+                totalFundCost={calc.totalFundCost}
+                t={t}
+              />
+            </div>
+
+            {/* Right Column: Calculation Ledger */}
+            <div className="desktop-col">
+              <CalculationLedgerSection
+                targetQty={safeQty}
+                unitLabel={calc.unitLabel}
+                unitPrice={calc.unitPrice}
+                fullGoldCost={calc.fullGoldCost}
+                fullRMCost={calc.fullRMCost}
+                modalGold={safeModalGold}
+                totalFundCost={calc.totalFundCost}
+                balanceAfterFund={calc.balanceAfterFund}
+                fundShortfall={calc.fundShortfall}
+                totalVoucherYield={calc.totalVoucherYield}
+                coveredItems={calc.coveredItems}
+                dustVoucher={calc.dustVoucher}
+                remainingItems={calc.remainingItems}
+                remainingItemsGold={calc.remainingItemsGold}
+                usableGold={calc.usableGold}
+                netItemDeficit={calc.netItemDeficit}
+                extraGoldNeeded={calc.extraGoldNeeded}
+                extraRMNeeded={calc.extraRMNeeded}
+                actualTotalRM={calc.actualTotalRM}
+                netSavingsRM={calc.netSavingsRM}
+                onCopySummary={handleCopySummary}
+                t={t}
+              />
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Footer */}
       <footer className="app-footer mono">

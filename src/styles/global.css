@@ -1,48 +1,82 @@
 /* ==========================================================================
    MIDNIGHT BLACK × ELECTRIC BLUE × SUNSET ORANGE DESIGN SYSTEM
-   Exact 60% / 30% / 10% Color Balance
+   Unslop Redline: Quiet chrome, 4px grid, unified typography, no neon glare
+   Supports Dark Mode (Default) and Light Mode
    ========================================================================== */
 
 :root {
-  /* 60% — Midnight Black Foundation */
-  --bg-root: #171717;
-  --bg-secondary: #202020;
-  --bg-panel: #262626;
-  --bg-inset: #1a1a1a;
-  --border-subtle: #2f2f2f;
+  /* Default: Dark Theme */
+  --bg-root: #141416;
+  --bg-secondary: #1e1e22;
+  --bg-panel: #26262b;
+  --bg-inset: #18181b;
+  --border-subtle: #2e2e34;
   --border-focus: #3b82f6;
 
-  --text-main: #F5F5F5;
-  --text-muted: #A3A3A3;
-  --text-dim: #737373;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
 
-  /* 30% — Electric Blue (Interactive & Structural Accents) */
-  --blue-primary: #2563EB;
-  --blue-secondary: #3B82F6;
+  /* Primary Interactive Accents (Calm Slate Blue) */
+  --blue-primary: #2563eb;
+  --blue-secondary: #3b82f6;
   --blue-surface: rgba(37, 99, 235, 0.12);
   --blue-border: rgba(59, 130, 246, 0.35);
   --blue-hover: #1d4ed8;
 
-  /* 10% — Sunset Orange (Key Metrics & Highlight Results Only) */
-  --orange-accent: #FF7A1A;
-  --orange-secondary: #FF963D;
-  --orange-surface: rgba(255, 122, 26, 0.12);
-  --orange-border: rgba(255, 122, 26, 0.35);
+  /* Warm Accent (Sunset Orange - Key Metrics Only) */
+  --orange-accent: #f97316;
+  --orange-secondary: #fb923c;
+  --orange-surface: rgba(249, 115, 22, 0.12);
+  --orange-border: rgba(249, 115, 22, 0.35);
 
   /* Status Colors */
-  --status-green: #10B981;
-  --status-red: #EF4444;
+  --status-green: #10b981;
+  --status-green-bg: rgba(16, 185, 129, 0.12);
+  --status-red: #ef4444;
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Shadows & Radius */
+  /* Geometry & Shadows */
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 12px;
-  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.45);
-  --shadow-hover: 0 6px 22px rgba(0, 0, 0, 0.6);
+  --radius-lg: 14px;
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] {
+  /* Light Theme Overrides */
+  --bg-root: #f4f6f8;
+  --bg-secondary: #ffffff;
+  --bg-panel: #f8fafc;
+  --bg-inset: #f1f5f9;
+  --border-subtle: #e2e8f0;
+  --border-focus: #2563eb;
+
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+
+  --blue-primary: #2563eb;
+  --blue-secondary: #1d4ed8;
+  --blue-surface: #eff6ff;
+  --blue-border: #bfdbfe;
+  --blue-hover: #1e40af;
+
+  --orange-accent: #ea580c;
+  --orange-secondary: #f97316;
+  --orange-surface: #fff7ed;
+  --orange-border: #fed7aa;
+
+  --status-green: #059669;
+  --status-green-bg: #ecfdf5;
+  --status-red: #dc2626;
+
+  --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-hover: 0 6px 16px rgba(15, 23, 42, 0.1);
 }
 
 * {
@@ -58,6 +92,7 @@ html, body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   font-size: 13px;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 body {
@@ -83,6 +118,93 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.875rem;
+}
+
+/* Top Navigation Tabs (Store vs Calculator) */
+.main-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  box-shadow: var(--shadow-card);
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.nav-tab-btn:hover {
+  color: var(--text-main);
+  background-color: var(--bg-panel);
+}
+
+.nav-tab-btn.active {
+  color: var(--blue-primary);
+  background-color: var(--blue-surface);
+  border-color: var(--blue-border);
+}
+
+[data-theme="light"] .nav-tab-btn.active {
+  color: #1d4ed8;
+  background-color: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.nav-tab-pill {
+  font-size: 0.675rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.15rem 0.4rem;
+  border-radius: 9999px;
+  background-color: var(--orange-surface);
+  color: var(--orange-accent);
+  border: 1px solid var(--orange-border);
+}
+
+/* Nav Controls (Theme & Lang Switchers) */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--text-muted);
+  background-color: var(--bg-inset);
 }
 
 /* Top Bar: Header & Deal Analyzer (Side-by-Side on Desktop) */
@@ -130,7 +252,7 @@ body {
 }
 
 .card-section:hover {
-  border-color: #383838;
+  border-color: var(--blue-border);
 }
 
 .section-header {
@@ -172,6 +294,9 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #333333;
   border-radius: 3px;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--blue-primary);
